@@ -17,14 +17,14 @@ class Foo(val bar: Bar) {
     fun call() = bar.call() + 23
 }
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS) // If this is remove, all is ok
 @ExtendWith(MockitoExtension::class)
 class HelloTest {
 
     @Mock lateinit var bar: Bar
     @InjectMocks lateinit var foo: Foo
 
-    @RepeatedTest(100)
+    @RepeatedTest(4)
     fun `should return 24`() {
         /* Given */
         whenever(bar.call()).thenReturn(1)
@@ -34,7 +34,7 @@ class HelloTest {
         assertThat(r).isEqualTo(24)
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(4)
     fun `@InjectMocked foo should have same bar as bar`() {
         assertThat(foo.bar).isSameAs(bar)
     }
